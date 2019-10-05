@@ -15,9 +15,7 @@ unsigned long microseconds;
 
 const int Transmitter=2;  // Transmitter connected to pin 10
 //const String MusicTarget_Full="B1 E1 G2 F#1 E1 B2 A2 F#1 E1 G2 F#1 D1 F1 B1 ";
-const String MusicTarget="G2 F#1 "; //F#1 D1 F1 ";
-const String MusicTarget2="G2 F#1 E1 ";
-//"E1 G2 F#1 E1 A2 "; 
+const String MusicTarget2="G2 F#1 E1 ";   //"E1 G2 F#1 E1 A2 "; 
 double vReal[SAMPLES];
 double vImag[SAMPLES];
 
@@ -59,7 +57,9 @@ void loop() {
     /*PRINT RESULTS*/
     if (peak>54) {
       peak=round(peak);
-      if  (peak>=212 && peak<=222) {
+      Serial.println(peak);
+
+      if  (peak>=210 && peak<=222) {
         // G1 on xylophone
         if (lastState!="G1") {
             MusicPlayed=MusicPlayed+"G1 ";
@@ -104,7 +104,7 @@ void loop() {
         lastState="D1"; 
         //Serial.println("D1");
         
-      } else if (peak==335 || peak==334 || peak==333) {
+      } else if ( peak>=333 && peak<=338) {
         // E1 on xylophone
         if (lastState!="E1") {
             MusicPlayed=MusicPlayed+"E1 ";
@@ -118,14 +118,14 @@ void loop() {
         }
         lastState="F1"; 
         //Serial.println("F1");
-      }  else if  (peak>=496 && peak <=498) {
+      }  else if  (peak>=496 && peak <=500) {
         // F#1 on xylophone
         if (lastState!="F#1") {
             MusicPlayed=MusicPlayed+"F#1 ";
         }
         lastState="F#1"; 
         //Serial.println("F#1");
-      } else if (peak==425 || peak==426) {
+      } else if (peak>=422 && peak<=426) {
         // G2 on xylophone
         if (lastState!="G2") {
             MusicPlayed=MusicPlayed+"G2 ";
@@ -176,5 +176,16 @@ void loop() {
       }
     }
 
-    delay(100);  //Repeat the process every second
+    delay(100);  //Repeat the process every second OR:
+    //while(1);       //Run code once
 }
+
+
+/*    for(int i=0; i<(SAMPLES/2); i++)
+    {
+        //View all these three lines in serial terminal to see which frequencies has which amplitudes
+         
+        //Serial.print((i * 1.0 * SAMPLING_FREQUENCY) / SAMPLES, 1);
+        //Serial.print(" ");
+        //Serial.println(vReal[i], 1);    //View only this line in serial plotter to visualize the bins
+    }*/
